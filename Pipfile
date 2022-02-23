@@ -8,6 +8,7 @@ requests = "*"
 flake8 = "*"
 pydocstyle = "*"
 pylint = "*"
+lxml = "*"
 
 [dev-packages]
 
