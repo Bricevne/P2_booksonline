@@ -17,7 +17,7 @@ if response.ok:
 
     number_available_text = product_information[5].text
     number_available = "".join([character for character in number_available_text if character.isdigit()])
-    print(number_available)
+    
     product_description = soup.find("article", {"class" : "product_page"}).findAll("p")[3]
     category = soup.find("ul", {"class" : "breadcrumb"}).findAll("a")[2].text
 
