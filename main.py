@@ -1,8 +1,7 @@
-from distutils.command.build_scripts import first_line_re
 import requests
 from bs4 import BeautifulSoup
 from functions.book_information import *
-
+import shutil
 
 CSV_HEADER = ["product_page_url",
             "universal_product_code",
@@ -89,6 +88,14 @@ for category, url in categories.items():
                 product_details["category"] = get_category(soup)
                 product_details["review_rating"] = get_review_rating(soup)
                 product_details["image_url"] = get_image_url(soup)
+
+                image_title = product_details['title'].replace(' ', '-')
+                resp = requests.get(product_details["image_url"], stream=True)
+                if resp.ok:
+                    with open(f"products/images/{image_title}.jpg", 'wb') as file:
+                        resp.raw.decode_content = True
+                        print(resp.raw)
+                        shutil.copyfileobj(resp.raw, file)
 
                 with open(f"products/information/{category}.csv", "a") as file:
                     line = ""
