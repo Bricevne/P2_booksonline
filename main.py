@@ -34,7 +34,7 @@ if response.ok:
 
 for category, url in categories.items():
 
-    with open(f"products_information/{category}.csv", "w") as file:
+    with open(f"products/information/{category}.csv", "w") as file:
         first_line = ""
         for headers in CSV_HEADER:
             first_line += headers
@@ -90,7 +90,7 @@ for category, url in categories.items():
                 product_details["review_rating"] = get_review_rating(soup)
                 product_details["image_url"] = get_image_url(soup)
 
-                with open(f"products_information/{category}.csv", "a") as file:
+                with open(f"products/information/{category}.csv", "a") as file:
                     line = ""
                     for headers in CSV_HEADER:
                         line += product_details[headers]
