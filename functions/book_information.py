@@ -3,6 +3,7 @@ Functions to get all the book's information
 """
     
 def get_title(soup_object):
+    """Return book title"""
     return soup_object.find("h1").text
 
 def get_universal_product_code(product_information_table):
