@@ -1,10 +1,6 @@
 """
 Functions to get all the book's information
 """
-
-from urllib import request as req
-
-# def get_book_url():
     
 def get_title(soup_object):
     return soup_object.find("h1").text
