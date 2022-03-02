@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from functions.book_information import *
+from books.book_information import *
 import shutil
 
 CSV_HEADER = ["product_page_url",
@@ -94,7 +94,6 @@ for category, url in categories.items():
                 if resp.ok:
                     with open(f"products/images/{image_title}.jpg", 'wb') as file:
                         resp.raw.decode_content = True
-                        print(resp.raw)
                         shutil.copyfileobj(resp.raw, file)
 
                 with open(f"products/information/{category}.csv", "a") as file:
