@@ -25,7 +25,10 @@ def get_number_available(product_information_table: list) -> str:
 
 def get_product_description(soup_object: object) -> str:
     """Return book description.""" 
-    description = soup_object.find("article", {"class" : "product_page"}).findAll("p")[3].text
+    if soup_object.find("div", {"id": "product_description"}) != None:
+        description = soup_object.find("article", {"class" : "product_page"}).findAll("p")[3].text
+    else:
+        description = "No description yet."
     return description.replace(";", ",")
 
 def get_category(soup_object: object) -> str:
