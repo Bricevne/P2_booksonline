@@ -1,4 +1,6 @@
 Pipfile
 Pipfile.lock
 __pycache__/
-products
+.DS_Store
+*.csv
+*.jpg
