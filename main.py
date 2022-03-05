@@ -4,7 +4,12 @@ from books.book_information import *
 from books.page import format_page_url, get_next_page
 from books.category import get_categories
 import shutil
-import pandas
+import os
+from output_control.directory import create_output_directories
+
+output_path = "products"
+if not os.path.exists(output_path):
+    create_output_directories()
 
 
 CSV_HEADER = ["product_page_url",
