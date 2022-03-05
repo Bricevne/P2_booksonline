@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from books.book_information import *
+from books.page import format_page_url, get_next_page
+from books.category import get_categories
 import shutil
 
 CSV_HEADER = ["product_page_url",
@@ -14,6 +16,8 @@ CSV_HEADER = ["product_page_url",
             "review_rating",
             "image_url"]
 
+categories = {}
+
 page_url = "https://books.toscrape.com/index.html"
 
 response = requests.get(page_url)
@@ -21,15 +25,8 @@ response.encoding = 'utf8'
 
 
 if response.ok:
-    categories = {}
     soup = BeautifulSoup(response.text, features="html.parser")
-    category_list = soup.find("ul", {"class" : "nav-list"}).find("li").findAll("li")
-    for i in category_list:
-        category_url = "https://books.toscrape.com/"  + i.find("a")["href"]
-        category_name = i.find("a").text.replace(" ", "").replace("\n", "")
-        categories[category_name] = category_url
-
-
+    categories = get_categories(soup)
 
 for category, url in categories.items():
 
@@ -38,25 +35,16 @@ for category, url in categories.items():
         for headers in CSV_HEADER:
             first_line += headers
             if headers != CSV_HEADER[-1]:
-                first_line += ","
+                first_line += ";;"
         first_line += "\n"
         file.write(first_line)
 
-    page_url = url
-    response = requests.get(page_url)
-    response.encoding = 'utf8'
-
-    if response.ok:
-        soup = BeautifulSoup(response.text, features="html.parser")
-        number_of_article = int(soup.find("form", {"class" : "form-horizontal"}).find("strong").text)
-        if number_of_article > 21:
-            page_url = page_url.replace("index", "page-1")
-
+    page_url = format_page_url(url)
 
     response = requests.get(page_url)
     response.encoding = 'utf8'
 
-    page_number = "1"
+    page_number = 1
 
     while response.ok:
 
@@ -78,7 +66,6 @@ for category, url in categories.items():
 
                 product_details["product_page_url"] = books_page[books_nb]
                 product_table = soup.findAll("td")
-
                 product_details["universal_product_code"] = get_universal_product_code(product_table)
                 product_details["title"] = get_title(soup)
                 product_details["price_including_tax"] = get_price_including_tax(product_table)
@@ -89,7 +76,7 @@ for category, url in categories.items():
                 product_details["review_rating"] = get_review_rating(soup)
                 product_details["image_url"] = get_image_url(soup)
 
-                image_title = product_details['title'].replace(' ', '-')
+                image_title = product_details['title'].replace(' ', '-').replace('/', '-')
                 resp = requests.get(product_details["image_url"], stream=True)
                 if resp.ok:
                     with open(f"products/images/{image_title}.jpg", 'wb') as file:
@@ -101,16 +88,14 @@ for category, url in categories.items():
                     for headers in CSV_HEADER:
                         line += product_details[headers]
                         if headers != CSV_HEADER[-1]:
-                            line += ","
+                            line += ";;"
                     line += "\n"
                     file.write(line)
 
+        if "page" in page_url:   
 
-        if "page" in page_url:        
-            next_page_number = int(page_number) + 1
-            page_url = page_url.replace("page-" + str(page_number), "page-" + str(next_page_number))
-            page_number = next_page_number
-            
+            page_url = get_next_page(page_number, page_url)
+            page_number += 1
             response = requests.get(page_url)
             response.encoding = 'utf8'
         else:
