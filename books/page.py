@@ -13,7 +13,7 @@ def format_page_url(url: str) -> str:
     if response.ok:
         soup = BeautifulSoup(response.text, features="html.parser")
         number_of_article = int(soup.find("form", {"class" : "form-horizontal"}).find("strong").text)
-        if number_of_article > 21:
+        if number_of_article > 20:
             return url.replace("index", "page-1")
     return url
 
