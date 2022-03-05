@@ -5,11 +5,11 @@ from books.page import format_page_url, get_next_page
 from books.category import get_categories
 import shutil
 import os
-from output_control.directory import create_output_directories
+from output_control.folder_control import create_output_folders
 
 output_path = "products"
 if not os.path.exists(output_path):
-    create_output_directories()
+    create_output_folders()
 
 
 CSV_HEADER = ["product_page_url",
