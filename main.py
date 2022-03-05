@@ -7,9 +7,7 @@ import shutil
 import os
 from output_control.folder_control import create_output_folders
 
-output_path = "products"
-if not os.path.exists(output_path):
-    create_output_folders()
+
 
 
 CSV_HEADER = ["product_page_url",
@@ -34,6 +32,12 @@ response.encoding = 'utf8'
 if response.ok:
     soup = BeautifulSoup(response.text, features="html.parser")
     categories = get_categories(soup)
+
+
+output_path = "products"
+if not os.path.exists(output_path):
+    create_output_folders(categories)
+
 
 for category, url in categories.items():
 
@@ -86,7 +90,7 @@ for category, url in categories.items():
                 image_title = product_details['title'].replace(' ', '-').replace('/', '-')
                 resp = requests.get(product_details["image_url"], stream=True)
                 if resp.ok:
-                    with open(f"products/images/{image_title}.jpg", 'wb') as file:
+                    with open(f"products/images/{category}/{image_title}.jpg", 'wb') as file:
                         resp.raw.decode_content = True
                         shutil.copyfileobj(resp.raw, file)
 
