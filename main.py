@@ -4,6 +4,8 @@ from books.book_information import *
 from books.page import format_page_url, get_next_page
 from books.category import get_categories
 import shutil
+import pandas
+
 
 CSV_HEADER = ["product_page_url",
             "universal_product_code",
@@ -35,7 +37,7 @@ for category, url in categories.items():
         for headers in CSV_HEADER:
             first_line += headers
             if headers != CSV_HEADER[-1]:
-                first_line += ";;"
+                first_line += "; "
         first_line += "\n"
         file.write(first_line)
 
@@ -88,9 +90,10 @@ for category, url in categories.items():
                     for headers in CSV_HEADER:
                         line += product_details[headers]
                         if headers != CSV_HEADER[-1]:
-                            line += ";;"
+                            line += "; "
                     line += "\n"
                     file.write(line)
+
 
         if "page" in page_url:   
 
