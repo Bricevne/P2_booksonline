@@ -3,7 +3,6 @@ Create the necessary output folders.
 """
 
 from os import mkdir
-from shutil import rmtree
 
 def create_output_folders(path: str, categories: dict):
     """Create folders for csv and jpg files."""
