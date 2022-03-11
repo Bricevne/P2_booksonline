@@ -9,7 +9,7 @@ Clone the repository on your computer.
 
 Set your virtual environment under python 3.10
 
-pipenv install  # create the virtual environment and install the dependencies
+pipenv install  # create the virtual environment and install the dependencies  
 pipenv shell  # activate the virtual environment
 
 pipenv install -r requirements.txt # install the necessary libraries in the virtual environnement
@@ -17,7 +17,7 @@ pipenv install -r requirements.txt # install the necessary libraries in the virt
 
 ## Usage
 
-python main.py  # run the code to scrape the website and obtain all books information with csv
+python3 main.py  # run the code to scrape the website and obtain all books information with csv
 
 ## License
 MIT
