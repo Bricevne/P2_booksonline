@@ -8,8 +8,6 @@ from os import path
 from output_control.folder_control import create_output_folders
 
 
-
-
 CSV_HEADER = ["product_page_url",
             "universal_product_code",
             "title",
@@ -21,26 +19,21 @@ CSV_HEADER = ["product_page_url",
             "review_rating",
             "image_url"]
 
-categories = {}
 
 page_url = "https://books.toscrape.com/index.html"
 
 response = requests.get(page_url)
 response.encoding = 'utf8'
 
-
+categories = {}
 if response.ok:
     soup = BeautifulSoup(response.text, features="html.parser")
     categories = get_categories(soup)
 
-
 output_path = "products"
-
 create_output_folders(output_path, categories)
 
-
 for category, url in categories.items():
-
     with open(f"products/information/{category}.csv", "w") as file:
         first_line = ""
         for headers in CSV_HEADER:
@@ -56,13 +49,11 @@ for category, url in categories.items():
     response.encoding = 'utf8'
 
     page_number = 1
-
     while response.ok:
 
-
         soup = BeautifulSoup(response.text, features="html.parser")
-
         books_page = soup.findAll("h3")
+
         for i in range(len(books_page)):
             books_page[i] = books_page[i].find("a")["href"].replace("../../..", "https://books.toscrape.com/catalogue")
             
@@ -71,9 +62,9 @@ for category, url in categories.items():
             response.encoding = 'utf8'
 
             if response.ok:
-                soup = BeautifulSoup(response.text, features="html.parser")
 
                 product_details = {}
+                soup = BeautifulSoup(response.text, features="html.parser")
 
                 product_details["product_page_url"] = books_page[books_nb]
                 product_table = soup.findAll("td")
@@ -93,11 +84,11 @@ for category, url in categories.items():
                 if path.exists(file):
                     image_title += "(bis)"
 
-                resp = requests.get(product_details["image_url"], stream=True)
-                if resp.ok:
+                response = requests.get(product_details["image_url"], stream=True)
+                if response.ok:
                     with open(f"products/images/{category}/{image_title}.jpg", 'wb') as file:
-                        resp.raw.decode_content = True
-                        shutil.copyfileobj(resp.raw, file)
+                        response.raw.decode_content = True
+                        shutil.copyfileobj(response.raw, file)
 
                 with open(f"products/information/{category}.csv", "a") as file:
                     line = ""
@@ -108,9 +99,7 @@ for category, url in categories.items():
                     line += "\n"
                     file.write(line)
 
-
         if "page" in page_url:   
-
             page_url = get_next_page(page_number, page_url)
             page_number += 1
             response = requests.get(page_url)
