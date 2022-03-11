@@ -11,9 +11,4 @@ def create_output_folders(path: str, categories: dict):
     mkdir(f"{path}/images")
     mkdir(f"{path}/information")
     for key in categories.keys():
-        mkdir(f"products/images/{key}")
-
-def delete_ouput_folders(path: str):
-    """Delete all output folders."""
-    rmtree(path)
-
+        mkdir(f"{path}/images/{key}")
