@@ -5,7 +5,7 @@ from books.page import format_page_url, get_next_page
 from books.category import get_categories
 import shutil
 import os
-from output_control.folder_control import create_output_folders
+from output_control.folder_control import create_output_folders, delete_ouput_folders
 
 
 
@@ -35,8 +35,9 @@ if response.ok:
 
 
 output_path = "products"
-if not os.path.exists(output_path):
-    create_output_folders(categories)
+if os.path.exists(output_path):
+    delete_ouput_folders()
+create_output_folders(categories)
 
 
 for category, url in categories.items():
@@ -88,6 +89,11 @@ for category, url in categories.items():
                 product_details["image_url"] = get_image_url(soup)
 
                 image_title = product_details['title'].replace(' ', '-').replace('/', '-')
+                file = f"products/images/{category}/{image_title}.jpg"
+
+                if os.path.exists(file):
+                    image_title += "(bis)"
+
                 resp = requests.get(product_details["image_url"], stream=True)
                 if resp.ok:
                     with open(f"products/images/{category}/{image_title}.jpg", 'wb') as file:
