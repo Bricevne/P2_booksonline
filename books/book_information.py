@@ -1,6 +1,4 @@
-"""
-Functions to get all the book's information.
-"""
+"""Functions to get all the book's information."""
 
 
 def get_title(soup_object: object) -> str:

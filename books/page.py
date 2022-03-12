@@ -1,6 +1,4 @@
-"""
-Books' pages control.
-"""
+"""Books' pages control."""
 
 import requests
 from bs4 import BeautifulSoup

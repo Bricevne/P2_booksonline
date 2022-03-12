@@ -1,6 +1,4 @@
-"""
-Create the necessary output folders.
-"""
+"""Create the necessary output folders."""
 
 from os import mkdir
 

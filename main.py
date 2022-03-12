@@ -1,3 +1,6 @@
+"""Main entry point of the application."""
+
+
 import shutil
 from os import path
 

@@ -1,6 +1,4 @@
-"""
-Categories control.
-"""
+"""Categories control."""
 
 
 def get_categories(soup_object: object) -> dict:
