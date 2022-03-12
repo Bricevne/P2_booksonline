@@ -4,6 +4,7 @@ Create the necessary output folders.
 
 from os import mkdir
 
+
 def create_output_folders(path: str, categories: dict):
     """Create folders for csv and jpg files."""
     mkdir(path)
