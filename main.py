@@ -46,6 +46,7 @@ if response.ok:
 output_path = "products"
 create_output_folders(output_path, categories)
 
+books_counter = 0
 for category, url in categories.items():
     with open(f"products/information/{category}.csv", "w") as file:
         first_line = ""
@@ -74,8 +75,8 @@ for category, url in categories.items():
                 .replace("../../..", "https://books.toscrape.com/catalogue")
             )
 
-        for books_nb in range(len(books_page)):
-            response = requests.get(books_page[books_nb])
+        for book_url in range(len(books_page)):
+            response = requests.get(books_page[book_url])
             response.encoding = "utf8"
 
             if response.ok:
@@ -83,7 +84,7 @@ for category, url in categories.items():
                 product_details = {}
                 soup = BeautifulSoup(response.text, features="html.parser")
 
-                product_details["product_page_url"] = books_page[books_nb]
+                product_details["product_page_url"] = books_page[book_url]
                 product_table = soup.findAll("td")
                 product_details["universal_product_code"] = get_universal_product_code(
                     product_table
@@ -127,6 +128,9 @@ for category, url in categories.items():
                             line += ";"
                     line += "\n"
                     file.write(line)
+
+                books_counter += 1
+                print(f"Book n°{books_counter}")
 
         if "page" in page_url:
             page_url = get_next_page(page_number, page_url)
